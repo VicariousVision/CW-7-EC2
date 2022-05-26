@@ -1,0 +1,4 @@
+out = pd.DataFrame().assign(time=df['time'],load_shortfall_3h = predciothodf)
+out ## add load shortfall 
+
+out.to_csv('testsubmissio.csv',index=False) #RUN MODEL ON DF_TEST FILE 

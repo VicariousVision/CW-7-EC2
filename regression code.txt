@@ -1,0 +1,45 @@
+#MLR: 
+
+#loading data
+
+X= df.drop(['load_shortfall_3h','time','Seville_pressure','Valencia_wind_deg','Unnamed: 0','Valencia_pressure'],axis=1)
+y= df['load_shortfall_3h']
+
+#Training model
+linear_regression = LinearRegression()
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.20,random_state=1)
+linear_regression.fit(X_train,y_train)
+
+#The parameters of the best fit line:
+beta_0 = float(linear_regression.intercept_)
+beta_js = pd.DataFrame(linear_regression.coef_, X.columns, columns=['Coefficient'])
+print("Intercept:", beta_0)
+beta_js
+
+#SLR:
+slr = LinearRegression()
+
+slr.fit(X_train[['Madrid_temp_min']], y_train)
+from sklearn import metrics
+import math
+
+
+#Results:
+results_dict = {'Training MSE':
+                    {
+                        "SLR": metrics.mean_squared_error(y_train, slr.predict(X_train[['Madrid_temp_min']])),
+                        "MLR": metrics.mean_squared_error(y_train, linear_regression.predict(X_train))
+                    },
+                'Test MSE':
+                    {
+                        "SLR": metrics.mean_squared_error(y_test, slr.predict(X_test[['Madrid_temp_min']])),
+                        "MLR": metrics.mean_squared_error(y_test, linear_regression.predict(X_test))
+                    },
+                'Test RMSE':
+                    {
+                        "SLR": math.sqrt(metrics.mean_squared_error(y_test, slr.predict(X_test[['Madrid_temp_min']]))),
+                        "MLR": math.sqrt(metrics.mean_squared_error(y_test, linear_regression.predict(X_test)))
+                    }
+                }
+results_df = pd.DataFrame(data=results_dict)
+round(results_df,1)

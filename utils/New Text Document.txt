@@ -1,0 +1,10 @@
+git clone repo into EC2 
+and client 
+pip install prereqs on local and EC2 
+clone repo onto both git clone and link 
+cd into foler 
+terminal of the instance run api.py client side change dir to utils folder 
+open request.py change public ip address 
+so whats running on local knows where to go 
+save request.py
+request goes local to server then back to local
